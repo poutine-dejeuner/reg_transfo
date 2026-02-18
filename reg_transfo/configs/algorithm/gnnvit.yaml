@@ -1,0 +1,12 @@
+defaults:
+  - network: gnnvit
+  - optimizer: Adam
+  - _self_
+
+_target_: reg_transfo.algorithms.gnnvit.GNNViTAlgorithm
+_partial_: true
+_recursive_: false
+
+optimizer:
+  lr: 0.001
+  weight_decay: 0.00001

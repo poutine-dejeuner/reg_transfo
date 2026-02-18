@@ -1,3 +1,5 @@
+activate
+outputs/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -172,3 +174,4 @@ lightning_logs
 tests/.regression_files/**.png
 tests/.regression_files/**/*.gif
 data
+reg_transfo/datamodules/stats/

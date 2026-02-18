@@ -1,0 +1,7 @@
+debug: False
+
+model:
+  schnet_hidden_channels: 1024 #512
+  schnet_num_filters: 256
+  schnet_num_interactions: 5
+  schnet_num_gaussians: 50

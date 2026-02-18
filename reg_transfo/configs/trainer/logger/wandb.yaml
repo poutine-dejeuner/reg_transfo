@@ -2,7 +2,7 @@
 
 wandb:
   _target_: lightning.pytorch.loggers.wandb.WandbLogger
-  reg_transfo: "ResearchTemplate"
+  project: reg_transfo
   name: ${name}
   save_dir: "."
   offline: False # set True to store all logs only locally

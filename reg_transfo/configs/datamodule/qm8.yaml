@@ -1,0 +1,7 @@
+_target_: reg_transfo.datamodules.dchem.QM8DataModule
+batch_size: 32
+num_workers: 4
+featurizer: ECFP
+splitter: random
+pin_memory: true
+shuffle: true

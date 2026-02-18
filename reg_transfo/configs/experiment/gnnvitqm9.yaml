@@ -1,0 +1,26 @@
+# @package _global_
+# python reg_transfo/main.py experiment=example
+
+defaults:
+  - override /algorithm: gnnvit
+  # - override /algorithm/network: resnet18
+  - override /datamodule: qm9
+  - override /trainer: default
+  - override /trainer/logger: wandb
+  - override /trainer/callbacks: default
+
+name: qm9_gnnvit
+
+seed: ${oc.env:SLURM_PROCID,42}
+
+algorithm:
+  optimizer:
+    lr: 0.002
+
+datamodule:
+  batch_size: 64
+
+trainer:
+  min_epochs: 1
+  max_epochs: 10
+  gradient_clip_val: 0.5

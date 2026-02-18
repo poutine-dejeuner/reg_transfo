@@ -1,0 +1,26 @@
+# @package _global_
+
+# High usage configuration to stress test RAM and VRAM
+
+defaults:
+  - override /algorithm: gnnvit
+  - override /datamodule: cremp
+  - override /trainer: default
+
+name: stress_test_gnn
+
+algorithm:
+  schnet_hidden_channels: 1024
+  schnet_num_filters: 512
+  schnet_num_interactions: 6
+  schnet_num_gaussians: 100
+
+  vit_img_size: 32  # Keep 32 as dataset provides 32x32, resizing is done in dataset but let's stick to natural size
+  vit_embed_dim: 1024
+  vit_depth: 12
+  vit_num_heads: 16
+  vit_patch_size: 4
+
+datamodule:
+  batch_size: 256  # Increase batch size
+  num_workers: 16  # Maximize workers for RAM usage

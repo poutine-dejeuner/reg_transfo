@@ -15,15 +15,16 @@ OmegaConf.register_new_resolver("eval", eval)
 
 
 def add_configs_to_hydra_store():
-    from reg_transfo.utils.remote_launcher_plugin import RemoteSlurmQueueConf
+    # from reg_transfo.utils.remote_launcher_plugin import RemoteSlurmQueueConf
 
     """Adds all configs to the Hydra Config store."""
-    ConfigStore.instance().store(
-        group="hydra/launcher",
-        name="remote_submitit_slurm",
-        node=RemoteSlurmQueueConf,
-        provider="Mila",
-    )
+    # ConfigStore.instance().store(
+    #     group="hydra/launcher",
+    #     name="remote_submitit_slurm",
+    #     node=RemoteSlurmQueueConf,
+    #     provider="Mila",
+    # )
+    pass
 
 
 __all__ = [
