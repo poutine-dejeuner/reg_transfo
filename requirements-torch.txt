@@ -1,0 +1,2 @@
+torch==2.4.1 --find-links https://download.pytorch.org/whl/cu118
+torch-cluster --find-links https://download.pytorch.org/whl/cu118

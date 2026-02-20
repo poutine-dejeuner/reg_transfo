@@ -175,3 +175,4 @@ tests/.regression_files/**.png
 tests/.regression_files/**/*.gif
 data
 reg_transfo/datamodules/stats/
+reg_transfo/.schemas

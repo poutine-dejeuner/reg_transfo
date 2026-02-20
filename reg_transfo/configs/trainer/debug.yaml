@@ -1,16 +1,24 @@
 defaults:
-  - default.yaml
-min_epochs: 1
-max_epochs: 2
-# prints
-profiler: null
+  # - callbacks: no_callbacks
+  - logger: wandb
 
+_target_: lightning.Trainer
+accelerator: auto
+strategy: auto
+devices: 1
 # debugs
 fast_dev_run: true
+profiler: simple
 overfit_batches: 0
 limit_val_batches: 1.0
 limit_test_batches: 1.0
 detect_anomaly: true
 enable_checkpointing: false
+deterministic: true
 
-callbacks: no_checkpoints.yaml
+min_epochs: 1
+max_epochs: 1
+
+default_root_dir: ${hydra:runtime.output_dir}
+
+gradient_clip_val: 0.5

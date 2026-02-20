@@ -67,6 +67,7 @@ def train_and_evaluate(
     """
 
     # Create the trainer
+    lightning.Trainer
     trainer = instantiate_trainer(config.trainer)
 
     for lightning_logger in trainer.loggers:

@@ -2,6 +2,7 @@
 
 wandb:
   _target_: lightning.pytorch.loggers.wandb.WandbLogger
+  group: "topo augment"
   project: reg_transfo
   name: ${name}
   save_dir: "."
@@ -11,5 +12,4 @@ wandb:
   log_model: False
   prefix: ""
   job_type: "train"
-  group: ""
   tags: []

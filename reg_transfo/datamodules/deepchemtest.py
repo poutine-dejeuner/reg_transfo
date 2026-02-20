@@ -14,7 +14,7 @@ tasks, dataset, transformers = dataset_dc
 train, valid, test = dataset
 
 x,y,w,ids = train.X, train.y, train.w, train.ids
-conf=x.GetConformer()
+conf=x[0].GetConformer().GetPositions()
 print(conf)
 print("X shape: ", x.shape)
 print("y shape: ", y.shape)

@@ -3,6 +3,7 @@
 import timm
 import torch
 import torch.nn as nn
+from torch_geometric.data import Data
 from torch_geometric.nn import SchNet, global_add_pool
 
 
@@ -80,33 +81,33 @@ class GNNViTNetwork(nn.Module):
             nn.Linear(fusion_hidden_dim, output_dim),
         )
 
-    def forward(self, batch_graph, batch_images):
+    def forward(self, batch: Data):
         """Forward pass combining graph and image data.
 
         Args:
-            batch_graph: PyTorch Geometric batch with graph data
-            batch_images: Batch of images [batch_size, channels, height, width]
+            batch: PyTorch Geometric batch with .x, .pos, .edge_index, .batch,
+                   and .persistence_img [batch_size, 1, H, W]
 
         Returns:
             Predictions [batch_size] or [batch_size, output_dim]
         """
         # Extract atomic numbers from one-hot encoded features
-        # Assumes atom types are [H, C, N, O, S] -> [1, 6, 7, 8, 16]
-        atom_indices = batch_graph.x.argmax(dim=1)
+        atom_indices = batch.x.argmax(dim=1)
         z_values = torch.tensor(
-            [1, 6, 7, 8, 16], device=batch_graph.x.device, dtype=torch.long
+            [1, 6, 7, 8, 16], device=batch.x.device, dtype=torch.long
         )[atom_indices]
 
         # Process graph through SchNet
-        _ = self.schnet(z_values, batch_graph.pos, batch_graph.batch)
+        _ = self.schnet(z_values, batch.pos, batch.batch)
         h = self.schnet_features["last_interaction"]
 
         # Pool node features to graph-level
-        graph_embedding = global_add_pool(h, batch_graph.batch)  # [batch_size, hidden_channels]
+        graph_embedding = global_add_pool(h, batch.batch)  # [batch_size, hidden_channels]
 
-        # Process images through ViT
+        # Process persistence images through ViT
+        batch_images = batch.persistence_img  # [batch_size, 1, H, W]
         if batch_images.dim() == 3:
-            batch_images = batch_images.unsqueeze(1)  # Add channel dimension if missing
+            batch_images = batch_images.unsqueeze(1)
 
         image_embedding = self.vit(batch_images)  # [batch_size, embed_dim]
 

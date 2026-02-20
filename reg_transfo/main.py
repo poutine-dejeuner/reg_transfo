@@ -29,7 +29,6 @@ from reg_transfo.configs.config import Config
 from reg_transfo.experiment import train_and_evaluate
 from reg_transfo.utils.hydra_utils import resolve_dictconfig
 from reg_transfo.utils.typing_utils import HydraConfigFor
-from reg_transfo.utils.utils import print_config
 
 if typing.TYPE_CHECKING:
     # Doing this in this type-checking-only block to avoid circular import issues.
@@ -60,7 +59,7 @@ add_configs_to_hydra_store()
 def main(dict_config: DictConfig) -> dict:
     """Main entry point: trains & evaluates a learning algorithm."""
 
-    print_config(dict_config, resolve=False)
+    # print_config(dict_config, resolve=False)
     assert dict_config["algorithm"] is not None
 
     # Resolve all the interpolations in the configs.

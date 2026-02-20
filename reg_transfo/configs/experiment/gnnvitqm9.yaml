@@ -3,15 +3,18 @@
 
 defaults:
   - override /algorithm: gnnvit
-  # - override /algorithm/network: resnet18
   - override /datamodule: qm9
   - override /trainer: default
-  - override /trainer/logger: wandb
-  - override /trainer/callbacks: default
 
+
+debug: true
 name: qm9_gnnvit
 
 seed: ${oc.env:SLURM_PROCID,42}
+
+data:
+  x_dim: 9
+  y_dim: 12
 
 algorithm:
   optimizer:
