@@ -16,4 +16,4 @@ vit_num_heads: 4
 
 # Fusion parameters
 fusion_hidden_dim: 64
-output_dim: ${data.y_dim}
+output_dim: ${instance_attr:datamodule.y_dim}

@@ -12,14 +12,16 @@ class MoleculeRegressor(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         preds = self(batch)
-        loss = nn.MSELoss()(preds, batch.y)
-        self.log('train/loss', loss, batch_size=batch.y.size(0))
+        targets = batch.y.view(preds.shape)
+        loss = nn.MSELoss()(preds, targets)
+        self.log('train/loss', loss, batch_size=targets.size(0))
         return loss
 
     def validation_step(self, batch, batch_idx):
         preds = self(batch)
-        mse = nn.MSELoss()(preds, batch.y)
-        mae = nn.L1Loss()(preds, batch.y)
+        targets = batch.y.view(preds.shape)
+        mse = nn.MSELoss()(preds, targets)
+        mae = nn.L1Loss()(preds, targets)
         self.log('val/loss', mse, batch_size=batch.y.size(0))
         self.log('val/mae', mae, batch_size=batch.y.size(0))
         return mse

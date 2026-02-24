@@ -1,11 +1,11 @@
 import glob
 import os
+import pickle
 from typing import Any, Dict, Tuple
 
 import lightning
 import numpy as np
 import torch
-from cremp.utils.chem_utils import load_mol
 from torch.utils.data import DataLoader, Dataset, random_split
 from torch_geometric.data import Batch, Data
 from tqdm import tqdm
@@ -14,6 +14,22 @@ ATOM_SYMBOLS = ['H', 'C', 'N', 'O', 'S']
 N_CONFORMERS = 31148756 # estimate
 N_MOLECULES = 3258
 MOL_DIR = '/media/vincent/disque_local/Downloads/pickle/'
+
+
+def load_mol(mol_path: str) -> Dict[str, Any]:
+    """Load a molecule from a pickle file.
+
+    Args:
+        mol_path: Path to the pickle file containing the molecule.
+
+    Returns:
+        A dictionary containing:
+        - 'rd_mol': RDKit molecule object with conformers
+        - 'conformers': List of conformer data (e.g., energies)
+    """
+    with open(mol_path, 'rb') as f:
+        mol_dict = pickle.load(f)
+    return mol_dict
 
 class MoleculeConformerDataset(Dataset):
     def __init__(self, mol_dir: str = MOL_DIR, mol_pattern: str = "*.pickle"):
@@ -172,11 +188,12 @@ def init_atom_symbols_list():
     return sorted(list(atom_symbols))
 
 class CREMPDataModule(lightning.LightningDataModule):
-    def __init__(self, mol_dir: str = MOL_DIR, batch_size: int = 32, num_workers: int = 4):
+    def __init__(self, mol_dir: str = MOL_DIR, batch_size: int = 32, num_workers: int = 4, data: dict | None = None):
         super().__init__()
         self.mol_dir = mol_dir
         self.batch_size = batch_size
         self.num_workers = num_workers
+        self.data = data or {}
         self.dataset = None
 
     def setup(self, stage: str = None):

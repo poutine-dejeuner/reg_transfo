@@ -5,3 +5,5 @@ data_type: graph
 splitter: random
 pin_memory: true
 shuffle: true
+data:
+  y_dim: 12

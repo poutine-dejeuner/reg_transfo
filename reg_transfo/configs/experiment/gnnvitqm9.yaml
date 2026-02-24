@@ -12,16 +12,15 @@ name: qm9_gnnvit
 
 seed: ${oc.env:SLURM_PROCID,42}
 
-data:
-  x_dim: 9
-  y_dim: 12
-
 algorithm:
   optimizer:
     lr: 0.002
 
 datamodule:
   batch_size: 64
+  data:
+    x_dim: 9
+    y_dim: 12
 
 trainer:
   min_epochs: 1

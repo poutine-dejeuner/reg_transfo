@@ -19,11 +19,11 @@ import hydra
 import lightning
 import rich
 import rich.logging
-import wandb
 from hydra_plugins.auto_schema import auto_schema_plugin
 from omegaconf import DictConfig
 
 import reg_transfo
+import wandb
 from reg_transfo.configs import add_configs_to_hydra_store
 from reg_transfo.configs.config import Config
 from reg_transfo.experiment import train_and_evaluate
@@ -117,6 +117,10 @@ def setup_logging(log_level: str, global_log_level: str = "WARNING") -> None:
 
     reg_transfo_logger = logging.getLogger(PROJECT_NAME)
     reg_transfo_logger.setLevel(log_level.upper())
+
+    # Suppress noisy third-party loggers
+    for noisy_logger in ("deepchem", "tensorflow", "wandb", "torch_geometric", "matplotlib"):
+        logging.getLogger(noisy_logger).setLevel(logging.ERROR)
 
 
 def instantiate_algorithm(

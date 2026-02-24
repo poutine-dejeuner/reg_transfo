@@ -68,7 +68,7 @@ class GNNViTNetwork(nn.Module):
             img_size=vit_img_size,
             patch_size=vit_patch_size,
             in_chans=1,
-            num_classes=0,  # No classification head, just embeddings
+        num_classes=0,  # No classification head, just embeddings
             embed_dim=vit_embed_dim,
             depth=vit_depth,
             num_heads=vit_num_heads,

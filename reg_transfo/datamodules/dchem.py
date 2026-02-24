@@ -43,6 +43,8 @@ class DeepChemDataModule(LightningDataModule):
         splitter: str = "random",
         pin_memory: bool = True,
         shuffle: bool = True,
+        data: dict | None = None,
+        **kwargs,
     ):
         """
         Args:
@@ -66,11 +68,13 @@ class DeepChemDataModule(LightningDataModule):
         self.splitter = splitter
         self.pin_memory = pin_memory
         self.shuffle = shuffle
+        self.data = data or {}
 
         self.train_dataset = None
         self.val_dataset = None
         self.test_dataset = None
         self.tasks = None
+        self.y_dim = self.data.get("y_dim")
 
         self.save_hyperparameters()
 
