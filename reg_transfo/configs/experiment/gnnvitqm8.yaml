@@ -1,0 +1,28 @@
+# @package _global_
+# python reg_transfo/main.py experiment=example
+
+defaults:
+  - override /algorithm: gnnvit
+  - override /datamodule: qm8
+  - override /trainer: default
+
+
+debug: true
+name: qm8_gnnvit
+
+seed: ${oc.env:SLURM_PROCID,42}
+
+algorithm:
+  optimizer:
+    lr: 0.002
+
+datamodule:
+  batch_size: 64
+  data:
+    x_dim: 9
+    y_dim: 16
+
+trainer:
+  min_epochs: 1
+  max_epochs: 10
+  gradient_clip_val: 0.5
