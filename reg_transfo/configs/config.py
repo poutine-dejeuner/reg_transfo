@@ -33,6 +33,9 @@ class Config:
     trainer: dict = field(default_factory=dict)
     """Configuration for the 'Trainer'."""
 
+    training: dict = field(default_factory=dict)
+    """Configuration for training (loss function and metrics)."""
+
     log_level: str = "info"
     """Logging level."""
 

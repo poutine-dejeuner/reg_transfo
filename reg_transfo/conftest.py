@@ -336,7 +336,7 @@ def algorithm(
 ):
     """Fixture that creates the "algorithm" (usually a
     [LightningModule][lightning.pytorch.core.module.LightningModule])."""
-    algorithm = instantiate_algorithm(config.algorithm, datamodule=datamodule)
+    algorithm = instantiate_algorithm(config.algorithm, datamodule=datamodule, training_config=config.training)
     if isinstance(trainer, lightning.Trainer) and isinstance(algorithm, lightning.LightningModule):
         with trainer.init_module(), device:
             # A bit hacky, but we have to do this because the lightningmodule isn't associated

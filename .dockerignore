@@ -1,0 +1,17 @@
+.gitignore
+.venv
+.pytest_cache
+.ruff_cache
+.benchmarks
+__pycache__
+*.pyc
+.DS_Store
+logs/
+wandb/
+outputs/
+.vscode/
+.devcontainer/
+.pre-commit-config.yaml
+.copier-answers.yml
+*.log
+.schemas/

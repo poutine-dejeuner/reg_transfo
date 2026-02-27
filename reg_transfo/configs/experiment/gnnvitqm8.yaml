@@ -24,5 +24,5 @@ datamodule:
 
 trainer:
   min_epochs: 1
-  max_epochs: 10
+  max_epochs: 100
   gradient_clip_val: 0.5

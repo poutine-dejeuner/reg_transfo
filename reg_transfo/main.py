@@ -83,7 +83,7 @@ def main(dict_config: DictConfig) -> dict:
         datamodule = hydra.utils.instantiate(config.datamodule)
 
     # Create the algo.
-    algorithm = instantiate_algorithm(config.algorithm, datamodule=datamodule)
+    algorithm = instantiate_algorithm(config.algorithm, datamodule=datamodule, training_config=config.training)
 
     # Do the training and evaluation, returns the metric name and the overall 'error' to minimize.
     metric_name, error = train_and_evaluate(algorithm, config=config, datamodule=datamodule)
@@ -126,6 +126,7 @@ def setup_logging(log_level: str, global_log_level: str = "WARNING") -> None:
 def instantiate_algorithm(
     algorithm_config: HydraConfigFor[lightning.LightningModule | JaxModule],
     datamodule: lightning.LightningDataModule | None = None,
+    training_config: dict | DictConfig | None = None,
 ) -> lightning.LightningModule | JaxModule:
     """Function used to instantiate the algorithm.
 
@@ -136,15 +137,34 @@ def instantiate_algorithm(
     The instantiated datamodule will be passed to the algorithm's constructor.
     """
     # Create the algorithm
-    algo_config = algorithm_config
+    algo_config = algorithm_config.copy() if isinstance(algorithm_config, dict) else algorithm_config
 
+    # Instantiate loss and metrics from training config if available
+    instantiate_kwargs = {}
     if datamodule:
-        algo_or_algo_partial = hydra.utils.instantiate(algo_config, datamodule=datamodule)
+        instantiate_kwargs["datamodule"] = datamodule
+
+    training_kwargs = {}
+    if training_config is not None:
+        if "loss" in training_config:
+            training_kwargs["loss_fn"] = hydra.utils.instantiate(training_config["loss"])
+        if "metrics" in training_config:
+            training_kwargs["metrics"] = hydra.utils.instantiate(training_config["metrics"])
+
+    # Try to instantiate with loss and metrics first (for molecule algorithms)
+    if training_kwargs:
+        try:
+            algo_or_algo_partial = hydra.utils.instantiate(
+                algo_config, **instantiate_kwargs, **training_kwargs
+            )
+        except TypeError:
+            # If the algorithm doesn't accept loss_fn/metrics, instantiate without them
+            algo_or_algo_partial = hydra.utils.instantiate(algo_config, **instantiate_kwargs)
     else:
-        algo_or_algo_partial = hydra.utils.instantiate(algo_config)
+        algo_or_algo_partial = hydra.utils.instantiate(algo_config, **instantiate_kwargs)
 
     if isinstance(algo_or_algo_partial, functools.partial):
-        if datamodule:
+        if datamodule and "datamodule" not in instantiate_kwargs:
             return algo_or_algo_partial(datamodule=datamodule)
         return algo_or_algo_partial()
 

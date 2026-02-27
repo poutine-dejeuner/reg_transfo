@@ -20,6 +20,8 @@ class GNNViTAlgorithm(MoleculeRegressor):
         optimizer: HydraConfigFor[functools.partial[Optimizer]],
         datamodule: LightningDataModule,
         init_seed: int = 42,
+        loss_fn=None,
+        metrics=None,
     ):
         """
         Args:
@@ -27,10 +29,12 @@ class GNNViTAlgorithm(MoleculeRegressor):
             optimizer: Hydra config for optimizer
             datamodule: DataModule (ignored in save_hyperparameters)
             init_seed: Random seed for weight initialization
+            loss_fn: Loss function for training (optional)
+            metrics: Metrics for validation (optional)
             **kwargs: Network architecture parameters
         """
-        super().__init__()
-        self.save_hyperparameters(ignore=["datamodule", "network", "optimizer"])
+        super().__init__(loss_fn=loss_fn, metrics=metrics)
+        self.save_hyperparameters(ignore=["datamodule", "network", "optimizer", "loss_fn", "metrics"])
 
         self.datamodule = datamodule
         self.network_config = network

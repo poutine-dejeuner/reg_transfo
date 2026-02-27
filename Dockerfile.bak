@@ -1,0 +1,31 @@
+# Use Python 3.11 slim image as base
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies needed for PyTorch and other packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv for faster dependency resolution
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:$PATH"
+
+# Copy only dependency files first (cached unless deps change)
+COPY pyproject.toml uv.lock README.md .git ./
+
+# Install Python dependencies using uv
+RUN uv sync --no-dev --python 3.11
+
+# Copy the rest of the source code
+COPY reg_transfo/ reg_transfo/
+
+# Set environment variable for PyTorch (required for tests)
+ENV CUBLAS_WORKSPACE_CONFIG=:4096:8
+
+# Default command: show help
+CMD ["bash", "-c", ". .venv/bin/activate && python reg_transfo/main.py --help"]

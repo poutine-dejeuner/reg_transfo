@@ -1,4 +1,5 @@
 defaults:
+  - batch_size_finder.yaml
   - model_checkpoint.yaml
   - early_stopping.yaml
   - model_summary.yaml

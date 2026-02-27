@@ -4,6 +4,7 @@ defaults:
   - algorithm: null
   - optional datamodule: null
   - trainer: default.yaml
+  - training: default.yaml
   - hydra: default.yaml
   - resources: null
   # Allows launching LOTS of runs in parallel on a cluster thanks to the submitit launcher.
