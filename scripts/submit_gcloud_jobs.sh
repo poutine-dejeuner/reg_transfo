@@ -5,7 +5,7 @@ set -e
 
 PROJECT_ID="project-42e015a5-9baf-49f2-8da"
 IMAGE_URI="gcr.io/$PROJECT_ID/reg-transfo:latest"
-REGION="us-central1"  # Adapte selon ta région préférée
+REGION="us-central1"  # Adapter selon ta région préférée
 
 # Liste des expériences
 EXPERIMENTS=(

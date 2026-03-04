@@ -1,14 +1,13 @@
 # @package _global_
-# python reg_transfo/main.py experiment=example
+# python reg_transfo/main.py experiment=gnnvitqm7
 
 defaults:
   - override /algorithm: gnnvit
-  - override /datamodule: qm8
+  - override /datamodule: qm7
   - override /trainer: default
 
-
 debug: true
-name: qm8_gnnvit_ablation
+name: qm7_gnnvit_ablation
 
 seed: ${oc.env:SLURM_PROCID,42}
 
@@ -16,18 +15,18 @@ algorithm:
   optimizer:
     lr: 0.001
   network:
-    schnet_hidden_channels: 80
-    schnet_num_filters: 80
+    schnet_hidden_channels: 48
+    schnet_num_filters: 48
     schnet_num_interactions: 2
-    vit_embed_dim: 40
-    vit_depth: 2
+    vit_embed_dim: 24
+    vit_depth: 1
     vit_num_heads: 4
 
 datamodule:
   batch_size: 64
   data:
     x_dim: 9
-    y_dim: 16
+    y_dim: 1
 
 trainer:
   min_epochs: 1

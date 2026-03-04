@@ -1,7 +1,7 @@
 import glob
 import os
 import pickle
-from typing import Any, Dict, Tuple
+from typing import Any
 
 import lightning
 import numpy as np
@@ -16,7 +16,7 @@ N_MOLECULES = 3258
 MOL_DIR = '/media/vincent/disque_local/Downloads/pickle/'
 
 
-def load_mol(mol_path: str) -> Dict[str, Any]:
+def load_mol(mol_path: str) -> dict[str, Any]:
     """Load a molecule from a pickle file.
 
     Args:
@@ -42,7 +42,7 @@ class MoleculeConformerDataset(Dataset):
     def __len__(self) -> int:
         return N_MOLECULES
 
-    def get_item_coords_onehots_energy(self, idx: int) -> Tuple[np.ndarray,
+    def get_item_coords_onehots_energy(self, idx: int) -> tuple[np.ndarray,
         np.ndarray, np.ndarray]:
 
         mol_path = self.files[idx]
@@ -68,7 +68,7 @@ class MoleculeConformerDataset(Dataset):
 
         return coords, one_hot_embed, energy
 
-    def __getitem__(self, idx: int) -> Dict[str, Any]:
+    def __getitem__(self, idx: int) -> dict[str, Any]:
 
         coords, one_hot_embed, energy = self.get_item_coords_onehots_energy(idx)
         features = np.concatenate([one_hot_embed, coords], axis=1)
@@ -120,7 +120,7 @@ class MoleculePersistenceImageDataset(MoleculeConformerDataset):
 
         return imgs_np.astype(np.float32)
 
-    def __getitem__(self, idx: int) -> Dict[str, Any]:
+    def __getitem__(self, idx: int) -> dict[str, Any]:
         coords, one_hot_embed, energy = self.get_item_coords_onehots_energy(idx)
         pimg = self._compute_persistence_image([coords])[0]
         return {

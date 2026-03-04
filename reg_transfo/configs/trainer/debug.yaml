@@ -1,6 +1,6 @@
 defaults:
   - logger: wandb
-  - callbacks: no_callbacks
+  - callbacks: none
 
 _target_: lightning.Trainer
 accelerator: auto

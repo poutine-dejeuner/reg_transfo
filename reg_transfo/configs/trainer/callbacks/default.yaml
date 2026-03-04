@@ -20,7 +20,6 @@ model_checkpoint:
 
 early_stopping:
   monitor: "val/loss"
-  patience: 5  # Stop training if accuracy doesn't improve for `patience` epochs.
   mode: "min"
 
 model_summary:

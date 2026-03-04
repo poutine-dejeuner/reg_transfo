@@ -23,6 +23,9 @@ job_logging:
   root:
     handlers: [rich]
   disable_existing_loggers: False
+  loggers:
+    lightning.fabric.utilities.cloud_io:
+      level: WARNING
 
 hydra_logging:
   handlers:

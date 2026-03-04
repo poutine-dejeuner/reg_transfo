@@ -22,6 +22,8 @@ class GNNViTNetwork(nn.Module):
         vit_embed_dim: int = 128,
         vit_depth: int = 4,
         vit_num_heads: int = 4,
+        vit_drop_rate: float = 0.1,
+        vit_attn_drop_rate: float = 0.1,
         fusion_hidden_dim: int = 64,
         output_dim: int = 1,
     ):
@@ -37,6 +39,8 @@ class GNNViTNetwork(nn.Module):
             vit_embed_dim: Embedding dimension for ViT
             vit_depth: Number of transformer blocks
             vit_num_heads: Number of attention heads
+            vit_drop_rate: Dropout rate for ViT (MLP and embedding)
+            vit_attn_drop_rate: Dropout rate for ViT attention weights
             fusion_hidden_dim: Hidden dimension for fusion MLP
             output_dim: Output dimension (1 for regression)
         """

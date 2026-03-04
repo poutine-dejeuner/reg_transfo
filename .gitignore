@@ -1,4 +1,3 @@
-s
 activate
 outputs/
 # Byte-compiled / optimized / DLL files
@@ -177,3 +176,4 @@ tests/.regression_files/**/*.gif
 data
 reg_transfo/datamodules/stats/
 reg_transfo/.schemas
+other_models_checkpoints/

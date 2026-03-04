@@ -1,4 +1,4 @@
-"""DataModules for DeepChem molecular datasets (QM7, QM8, QM9, PDBbind) and PyG datasets (QM7b)."""
+"""DataModules for DeepChem molecular datasets (QM7, QM8, QM9, PDBbind)."""
 
 import logging
 import warnings
@@ -12,7 +12,6 @@ from lightning import LightningDataModule
 from rdkit import RDLogger
 from torch.utils.data import DataLoader, Dataset, TensorDataset
 from torch_geometric.data import Batch, Data
-from torch_geometric.datasets import QM7b as QM7bDataset
 
 from reg_transfo.utils.env_vars import DATA_DIR, NUM_WORKERS
 
@@ -35,7 +34,7 @@ class DeepChemDataModule(LightningDataModule):
 
     def __init__(
         self,
-        dataset_name: Literal["qm7", "qm8", "qm9", "qm7b", "pdbbind"],
+        dataset_name: Literal["qm7", "qm8", "qm9", "pdbbind"],
         data_dir: str | Path = DATA_DIR,
         batch_size: int = 32,
         num_workers: int = NUM_WORKERS,
@@ -49,7 +48,7 @@ class DeepChemDataModule(LightningDataModule):
     ):
         """
         Args:
-            dataset_name: Name of the dataset to load (qm7, qm8, qm9, qm7b, or pdbbind)
+            dataset_name: Name of the dataset to load (qm7, qm8, qm9, or pdbbind)
             data_dir: Directory to store/load data
             batch_size: Batch size for dataloaders
             num_workers: Number of workers for dataloaders
@@ -102,10 +101,7 @@ class DeepChemDataModule(LightningDataModule):
 
     def setup(self, stage: str | None = None):
         """Load and setup datasets."""
-        if self.dataset_name == "qm7b":
-            self._setup_qm7b_datasets(stage)
-        else:
-            self._setup_graph_datasets(stage)
+        self._setup_graph_datasets(stage)
 
     def _setup_graph_datasets(self, stage: str | None = None):
         """Load datasets as molecular graphs with one-hot atom features."""
@@ -128,36 +124,11 @@ class DeepChemDataModule(LightningDataModule):
         train_dc, valid_dc, test_dc = datasets
 
         if stage == "fit" or stage is None:
-            self.train_dataset = GraphDataset(train_dc, self.ATOM_TYPES, self.persistence_img_size, cache_dir=self.data_dir)
-            self.val_dataset = GraphDataset(valid_dc, self.ATOM_TYPES, self.persistence_img_size, cache_dir=self.data_dir)
+            self.train_dataset = GraphDataset(train_dc, self.ATOM_TYPES, self.persistence_img_size, cache_dir=self.data_dir / "train")
+            self.val_dataset = GraphDataset(valid_dc, self.ATOM_TYPES, self.persistence_img_size, cache_dir=self.data_dir / "val")
 
         if stage == "test" or stage is None:
-            self.test_dataset = GraphDataset(test_dc, self.ATOM_TYPES, self.persistence_img_size, cache_dir=self.data_dir)
-
-    def _setup_qm7b_datasets(self, stage: str | None = None):
-        """Load QM7b dataset from torch_geometric."""
-        pyg_dir = self.data_dir.parent / "qm7b"
-        pyg_dir.mkdir(parents=True, exist_ok=True)
-
-        # Load full QM7b dataset from PyG
-        full_dataset = QM7bDataset(root=str(pyg_dir))
-
-        # Manual 80-10-10 split
-        n = len(full_dataset)
-        n_train = int(0.8 * n)
-        n_val = int(0.1 * n)
-
-        indices = torch.randperm(n).tolist()
-        train_indices = indices[:n_train]
-        val_indices = indices[n_train:n_train + n_val]
-        test_indices = indices[n_train + n_val:]
-
-        if stage == "fit" or stage is None:
-            self.train_dataset = [full_dataset[i] for i in train_indices]
-            self.val_dataset = [full_dataset[i] for i in val_indices]
-
-        if stage == "test" or stage is None:
-            self.test_dataset = [full_dataset[i] for i in test_indices]
+            self.test_dataset = GraphDataset(test_dc, self.ATOM_TYPES, self.persistence_img_size, cache_dir=self.data_dir / "test")
 
     def _to_torch_dataset(self, dc_dataset):
         """Convert DeepChem dataset to PyTorch TensorDataset."""
@@ -334,13 +305,6 @@ class QM9DataModule(DeepChemDataModule):
 
     def __init__(self, **kwargs):
         super().__init__(dataset_name="qm9", **kwargs)
-
-
-class QM7bDataModule(DeepChemDataModule):
-    """DataModule for QM7b dataset from torch_geometric."""
-
-    def __init__(self, **kwargs):
-        super().__init__(dataset_name="qm7b", **kwargs)
 
 
 class PDBbindDataModule(DeepChemDataModule):

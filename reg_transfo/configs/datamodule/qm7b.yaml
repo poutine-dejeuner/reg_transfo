@@ -1,6 +1,6 @@
 _target_: reg_transfo.datamodules.dchem.QM7DataModule
 batch_size: 32
-num_workers: 2
+num_workers: 4
 data_type: graph
 splitter: random
 pin_memory: true

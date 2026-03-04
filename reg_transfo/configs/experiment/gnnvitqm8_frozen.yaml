@@ -1,18 +1,17 @@
 # @package _global_
-# python reg_transfo/main.py experiment=example
+# python reg_transfo/main.py experiment=gnnvitqm8_frozen algorithm.schnet_checkpoint=path/to/schnet.ckpt
 
 defaults:
-  - override /algorithm: gnnvit
+  - override /algorithm: gnnvit_frozen
   - override /datamodule: qm8
   - override /trainer: default
 
-
-debug: true
-name: qm8_gnnvit_ablation
+name: qm8_gnnvit_frozen
 
 seed: ${oc.env:SLURM_PROCID,42}
 
 algorithm:
+  schnet_checkpoint: /home/vincent/repos/topo-augment/reg-transfo/logs/qm8_gnn/runs/2026-03-03/12-35-31/checkpoints/last.ckpt
   optimizer:
     lr: 0.001
   network:

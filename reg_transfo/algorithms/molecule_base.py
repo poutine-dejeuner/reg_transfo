@@ -1,5 +1,6 @@
 from collections.abc import Callable
 
+import hydra_zen
 import lightning.pytorch as pl
 import torch
 import torch.nn as nn
@@ -12,6 +13,7 @@ class MoleculeRegressor(pl.LightningModule):
         weight_decay: float = 0.0,
         loss_fn: Callable | None = None,
         metrics: dict[str, Callable] | None = None,
+        lr_scheduler=None,
     ):
         super().__init__()
         # self.save_hyperparameters() # Subclasses will handle save_hyperparameters
@@ -21,6 +23,7 @@ class MoleculeRegressor(pl.LightningModule):
         self.metrics = metrics or {
             "mae": nn.L1Loss(),
         }
+        self.lr_scheduler_config = lr_scheduler
 
     def training_step(self, batch, batch_idx):
         preds = self(batch)
@@ -42,4 +45,12 @@ class MoleculeRegressor(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
+        if self.lr_scheduler_config is None:
+            return optimizer
+        # Hydra may have already resolved the config to a functools.partial
+        if callable(self.lr_scheduler_config):
+            scheduler = self.lr_scheduler_config(optimizer)
+        else:
+            scheduler = hydra_zen.instantiate(self.lr_scheduler_config)(optimizer)
+        return {"optimizer": optimizer, "lr_scheduler": {"scheduler": scheduler, "monitor": "val/loss"}}

@@ -3,9 +3,11 @@ defaults:
   - optimizer: Adam
   - _self_
 
-_target_: reg_transfo.algorithms.gnnvit.GNNViTAlgorithm
+_target_: reg_transfo.algorithms.gnnvit_frozen.GNNViTFrozenGNN
 _partial_: true
 _recursive_: false
+
+schnet_checkpoint: ???  # Must be provided: path to pretrained SchNet .ckpt
 
 optimizer:
   lr: 0.001
