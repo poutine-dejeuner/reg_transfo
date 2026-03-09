@@ -26,6 +26,20 @@
     ".schemas/callbacks_default_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/trainer/callbacks/default.yaml",
     ".schemas/callbacks_batch_size_finder_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/trainer/callbacks/batch_size_finder.yaml",
     ".schemas/configs_config_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/config.yaml",
-    ".schemas/training_default_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/training/default.yaml"
+    ".schemas/training_default_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/training/default.yaml",
+    ".schemas/algorithm_gnnvit_frozen_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/algorithm/gnnvit_frozen.yaml",
+    ".schemas/algorithm_schnet_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/algorithm/schnet.yaml",
+    ".schemas/algorithm_gnnvit_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/algorithm/gnnvit.yaml",
+    ".schemas/experiment_gnnqm8_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/experiment/gnnqm8.yaml",
+    ".schemas/experiment_gnnvitqm7_frozen_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/experiment/gnnvitqm7_frozen.yaml",
+    ".schemas/experiment_gnnqm9_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/experiment/gnnqm9.yaml",
+    ".schemas/experiment_gnnqm7_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/experiment/gnnqm7.yaml",
+    ".schemas/experiment_gnnvitqm8_frozen_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/experiment/gnnvitqm8_frozen.yaml",
+    ".schemas/experiment_gnnvitqm9_frozen_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/experiment/gnnvitqm9_frozen.yaml",
+    ".schemas/experiment_gnnvitqm7_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/experiment/gnnvitqm7.yaml",
+    ".schemas/datamodule_qm7_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/datamodule/qm7.yaml",
+    ".schemas/datamodule_qm7b_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/datamodule/qm7b.yaml",
+    ".schemas/lr_scheduler_ReduceLROnPlateau_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/algorithm/lr_scheduler/ReduceLROnPlateau.yaml",
+    ".schemas/callbacks_early_stopping_schema.json": "/home/vincent/repos/topo-augment/reg-transfo/reg_transfo/configs/trainer/callbacks/early_stopping.yaml"
   }
 }

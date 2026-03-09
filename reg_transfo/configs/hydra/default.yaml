@@ -9,7 +9,8 @@ defaults:
 
 run:
   # output directory, generated dynamically on each run
-  dir: logs/${name}/runs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  # If resuming from checkpoint, use its run directory instead
+  dir: ${run_dir_from_ckpt:${ckpt_path},logs/${name}/runs/${now:%Y-%m-%d}/${now:%H-%M-%S}}
 sweep:
   dir: logs/${name}/multiruns/${now:%Y-%m-%d}/${now:%H-%M-%S}
   subdir: ${hydra.job.num}
